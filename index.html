@@ -1,0 +1,1187 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cream:#F6F1E7; --cream-card:#FFFDF8; --cream-sunk:#EEE7D8;
+    --terracotta:#C1633E; --terracotta-dark:#8F4526; --terracotta-tint:#F3E0D3;
+    --sage:#8A9A7E; --sage-dark:#5C6B52; --sage-tint:#E7ECE0;
+    --ink:#2E2A22; --ink-soft:#6B6153; --ink-faint:#A79E8C;
+    --line:#E1D8C4; --line-strong:#CBBFA3;
+    --red:#B4543F; --red-tint:#F4E1DB;
+    --amber:#B08A2E; --amber-tint:#F6EFD6;
+    --plum:#6B4A8F; --plum-tint:#EFE6F6;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  .ms-root{
+    font-family:'Work Sans',sans-serif; color:var(--ink); background:var(--cream);
+    display:flex; min-height:660px; border-radius:16px; overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .ms-serif{font-family:'Fraunces',serif;}
+  .ms-mono{font-family:'JetBrains Mono',monospace;}
+
+  .ms-nav{width:210px; background:var(--cream-sunk); padding:24px 16px; flex-shrink:0; border-right:1px solid var(--line);}
+  .ms-brand{font-family:'Fraunces',serif; font-size:20px; font-weight:600; color:var(--terracotta-dark); margin:0 0 2px;}
+  .ms-brand-sub{font-size:11px; color:var(--ink-faint); margin:0 0 28px; letter-spacing:.04em; text-transform:uppercase;}
+  .ms-navitem{display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:9px; font-size:14px; cursor:pointer; margin-bottom:2px; color:var(--ink-soft);}
+  .ms-navitem:hover{background:rgba(0,0,0,.03);}
+  .ms-navitem.active{background:var(--cream-card); color:var(--terracotta-dark); font-weight:500; box-shadow:0 1px 2px rgba(0,0,0,.04);}
+  .ms-navitem.locked{opacity:.42; cursor:default;}
+  .ms-navitem.locked:hover{background:none;}
+  .ms-navdot{width:6px;height:6px;border-radius:50%;background:var(--sage);flex-shrink:0;}
+  .ms-navgroup-label{font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint); margin:22px 0 6px 12px;}
+
+  .ms-main{flex:1; padding:28px 34px; overflow-y:auto; max-height:920px;}
+  .ms-pagehead{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:18px;}
+  .ms-pagetitle{font-family:'Fraunces',serif; font-size:26px; font-weight:600; margin:0;}
+  .ms-pagesub{font-size:13px; color:var(--ink-soft); margin:4px 0 0;}
+
+  .ms-btn{font-family:'Work Sans',sans-serif; font-size:13px; font-weight:500; border-radius:8px; padding:9px 14px; border:1px solid var(--line-strong); background:var(--cream-card); color:var(--ink); cursor:pointer;}
+  .ms-btn:hover{border-color:var(--terracotta);}
+  .ms-btn.primary{background:var(--terracotta); border-color:var(--terracotta); color:#fff;}
+  .ms-btn.primary:hover{background:var(--terracotta-dark);}
+  .ms-btn.small{padding:5px 10px; font-size:12px;}
+  .ms-btn.chip{border-radius:99px;}
+
+  .ms-cmdbar{position:relative; margin-bottom:22px;}
+  .ms-cmdinput{width:100%; font-family:'Work Sans',sans-serif; font-size:15px; padding:14px 46px 14px 16px; border-radius:12px; border:1px solid var(--line-strong); background:var(--cream-card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.03);}
+  .ms-cmdinput:focus{outline:none; border-color:var(--terracotta);}
+  .ms-cmdicon{position:absolute; right:16px; top:26px; transform:translateY(-50%); color:var(--ink-faint); font-size:15px; pointer-events:none;}
+  .ms-cmddropdown{position:absolute; top:calc(100% + 6px); left:0; right:0; background:var(--cream-card); border:1px solid var(--line-strong); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.1); z-index:50; overflow:hidden;}
+  .ms-cmdoption{padding:11px 16px; font-size:14px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;}
+  .ms-cmdoption:hover{background:var(--cream-sunk);}
+  .ms-cmdoption .ms-row-meta{margin:0;}
+  .ms-cmdpanel{margin-top:8px; background:var(--terracotta-tint); border-radius:12px; padding:14px 16px;}
+  .ms-cmdpanel-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:13px; font-weight:600; color:var(--terracotta-dark);}
+
+  .ms-footerstats{display:flex; gap:6px; flex-wrap:wrap; font-size:12px; color:var(--ink-faint); border-top:1px solid var(--line); padding-top:14px; margin-top:22px;}
+  .ms-footerstats b{color:var(--ink-soft); font-weight:500;}
+  .ms-footerstats .sep{color:var(--line-strong);}
+
+  .ms-panel{background:var(--cream-card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:16px;}
+  .ms-panel-title{font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); margin:0 0 12px; display:flex; align-items:center; justify-content:space-between;}
+
+  .ms-actionrow{border-bottom:1px solid var(--line); padding:12px 0;}
+  .ms-actionrow:last-child{border-bottom:none;}
+  .ms-actionrow-top{display:flex; align-items:center; gap:10px; cursor:pointer;}
+  .ms-row-name{font-size:14px; font-weight:500; margin:0;}
+  .ms-row-meta{font-size:12px; color:var(--ink-faint); margin:2px 0 0;}
+  .ms-row-suggest{font-size:12px; color:var(--terracotta-dark); margin:2px 0 0; font-weight:500;}
+  .ms-urgency{width:6px; align-self:stretch; border-radius:4px; flex-shrink:0; min-height:30px;}
+  .u-high{background:var(--red);}
+  .u-medium{background:var(--amber);}
+  .u-low{background:var(--sage);}
+  .ms-actionrow-expand{margin-top:10px; padding:12px; background:var(--cream-sunk); border-radius:10px;}
+  .ms-chiprow{display:flex; gap:6px; flex-wrap:wrap;}
+
+  .ms-empty{font-size:13px; color:var(--ink-faint); padding:8px 0; font-style:italic;}
+
+  .ms-filters{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; align-items:center;}
+  .ms-select, .ms-input{font-family:'Work Sans',sans-serif; font-size:13px; padding:7px 10px; border-radius:8px; border:1px solid var(--line-strong); background:var(--cream-card); color:var(--ink);}
+  .ms-input{width:200px;}
+  .ms-checkbox-label{font-size:13px; color:var(--ink-soft); display:flex; align-items:center; gap:6px; margin-left:auto;}
+
+  .ms-table{width:100%; border-collapse:collapse;}
+  .ms-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); font-weight:500; padding:0 12px 8px; border-bottom:1px solid var(--line-strong); cursor:pointer;}
+  .ms-table td{padding:12px; border-bottom:1px solid var(--line); font-size:13px; vertical-align:middle;}
+  .ms-table tr:hover{background:rgba(0,0,0,.015);}
+  .ms-table td.click{cursor:pointer;}
+  .ms-pill{font-size:11px; padding:4px 10px; border-radius:99px; font-weight:500; display:inline-block; white-space:nowrap;}
+  .pill-Not-Contacted{background:var(--cream-sunk); color:var(--ink-soft);}
+  .pill-Contacted{background:#E4EEF6; color:#2F5D80;}
+  .pill-Follow-up-Sent{background:var(--terracotta-tint); color:var(--terracotta-dark);}
+  .pill-Portfolio-Sent{background:var(--plum-tint); color:var(--plum);}
+  .pill-Replied{background:var(--sage-tint); color:var(--sage-dark);}
+  .pill-Meeting-Scheduled{background:#EFE6F6; color:#6B4A8F;}
+  .pill-Proposal-Sent{background:#F6F0D6; color:#8A7519;}
+  .pill-Won{background:var(--sage); color:#fff;}
+  .pill-Rejected{background:var(--red-tint); color:var(--red);}
+  .pill-tag{background:var(--cream-sunk); color:var(--ink-soft); font-size:10.5px; padding:3px 8px;}
+  .priority-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px;}
+  .p-High{background:var(--terracotta);}
+  .p-Medium{background:#C9A24B;}
+  .p-Low{background:var(--ink-faint);}
+
+  .ms-fit{font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:500;}
+
+  .ms-overlay{position:absolute; inset:0; background:rgba(46,42,34,.35); display:flex; align-items:flex-start; justify-content:flex-end; z-index:20;}
+  .ms-drawer{width:460px; background:var(--cream); height:100%; overflow-y:auto; padding:26px; border-left:1px solid var(--line);}
+  .ms-field{margin-bottom:13px;}
+  .ms-field label{display:block; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); margin-bottom:4px;}
+  .ms-field input, .ms-field select, .ms-field textarea{width:100%; font-family:'Work Sans',sans-serif; font-size:13px; padding:8px 10px; border-radius:8px; border:1px solid var(--line-strong); background:var(--cream-card); color:var(--ink);}
+  .ms-field textarea{resize:vertical; min-height:56px;}
+  .ms-field input:disabled{background:var(--cream-sunk); color:var(--ink-faint); cursor:not-allowed; border-style:dashed;}
+  .ms-drawer-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  .ms-drawer-title{font-family:'Fraunces',serif; font-size:20px; font-weight:600; margin:0;}
+  .ms-x{cursor:pointer; font-size:20px; color:var(--ink-faint); background:none; border:none;}
+  .ms-fieldrow{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .ms-fieldrow3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+  .ms-sectionlabel{font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--terracotta-dark); font-weight:600; margin:22px 0 12px; padding-top:14px; border-top:1px solid var(--line);}
+  .ms-sectionlabel:first-of-type{margin-top:10px; border-top:none; padding-top:0;}
+
+  .ms-fitrow{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:6px 0;}
+  .ms-fitrow label{font-size:12.5px; color:var(--ink-soft); flex:1;}
+  .ms-fitrow input[type=range]{flex:1.3;}
+  .ms-fitval{font-family:'JetBrains Mono',monospace; font-size:12px; width:16px; text-align:right;}
+  .ms-fit-total{display:flex; justify-content:space-between; align-items:baseline; padding:10px 12px; background:var(--terracotta-tint); border-radius:9px; margin-top:8px;}
+  .ms-fit-total b{font-family:'Fraunces',serif; font-size:20px; color:var(--terracotta-dark);}
+
+  .ms-presetrow{display:flex; gap:6px; flex-wrap:wrap; margin:8px 0 10px;}
+  .ms-preset{font-size:11.5px; padding:5px 9px; border-radius:99px; border:1px solid var(--line-strong); background:var(--cream-card); cursor:pointer;}
+  .ms-preset.selected{background:var(--terracotta); border-color:var(--terracotta); color:#fff;}
+
+  .ms-toast{position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--cream); font-size:13px; padding:9px 16px; border-radius:8px; z-index:40; display:flex; align-items:center; gap:14px;}
+  .ms-toast-undo{background:none; border:none; color:var(--terracotta-tint); text-decoration:underline; cursor:pointer; font-weight:600; font-size:13px; padding:0; font-family:'Work Sans',sans-serif;}
+  .ms-toast-undo:hover{color:#fff;}
+  .ms-histrow{display:grid; grid-template-columns:1.3fr 1fr 1fr auto; gap:6px; align-items:center; padding:8px 0; border-bottom:1px solid var(--line);}
+  .ms-histrow:last-child{border-bottom:none;}
+  .ms-histrow select, .ms-histrow input{font-family:'Work Sans',sans-serif; font-size:12px; padding:5px 6px; border-radius:6px; border:1px solid var(--line-strong); background:var(--cream-card); color:var(--ink); width:100%;}
+  .ms-histrow-del{background:none; border:none; color:var(--red); cursor:pointer; font-size:15px; padding:4px;}
+  .ms-histlabel{font-size:9.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-faint); margin:0 0 2px;}
+
+  .ms-loading{padding:80px; text-align:center; color:var(--ink-faint); font-size:13px;}
+  .ms-status-header{display:flex; align-items:center; gap:8px; margin-bottom:14px;}
+
+  .ms-chkgrid{display:flex; flex-wrap:wrap; gap:6px;}
+  .ms-chk{font-size:12px; padding:6px 10px; border-radius:99px; border:1px solid var(--line-strong); background:var(--cream-card); cursor:pointer; user-select:none;}
+  .ms-chk.on{background:var(--sage); border-color:var(--sage); color:#fff;}
+  .ms-chk.on.svc{background:var(--terracotta); border-color:var(--terracotta);}
+  .ms-chk.on.skl{background:var(--plum); border-color:var(--plum);}
+
+  .ms-scorebar{background:var(--cream-sunk); border-radius:99px; height:6px; overflow:hidden; width:60px;}
+  .ms-scorebar-fill{background:var(--terracotta); height:100%;}
+</style>
+
+<div id="ms-app" class="ms-root">
+  <div class="ms-loading">Loading Michelle Studio…</div>
+</div>
+
+<script>
+// ---- Storage fallback -------------------------------------------------
+// Inside Claude, window.storage already exists and this block does nothing.
+// Anywhere else (local file, GitHub Pages, a collaborator's browser) we fall
+// back to the browser's localStorage so the app can run and persist data.
+// Contract matches Claude's API: get/set resolve to an object on success;
+// get throws for a missing key; set resolves null on failure.
+(function(){
+  if (typeof window.storage !== 'undefined') return;
+  var PREFIX = 'michelle-studio:';
+  window.storage = {
+    get: async function(key){
+      var v = window.localStorage.getItem(PREFIX + key);
+      if (v === null) throw new Error('Key not found: ' + key);
+      return { key: key, value: v, shared: false };
+    },
+    set: async function(key, value){
+      try { window.localStorage.setItem(PREFIX + key, value); return { key: key, value: value, shared: false }; }
+      catch (e) { console.error('storage fallback set failed:', e); return null; }
+    },
+    delete: async function(key){
+      try { window.localStorage.removeItem(PREFIX + key); return { key: key, deleted: true, shared: false }; }
+      catch (e) { return null; }
+    },
+    list: async function(prefix){
+      var keys = [];
+      for (var i = 0; i < window.localStorage.length; i++) {
+        var k = window.localStorage.key(i);
+        if (k.indexOf(PREFIX) === 0) { var name = k.slice(PREFIX.length); if (!prefix || name.indexOf(prefix) === 0) keys.push(name); }
+      }
+      return { keys: keys, prefix: prefix, shared: false };
+    }
+  };
+})();
+</script>
+<script>
+(function(){
+
+var ACTION_TYPES = ["Email Sent","Follow-up Sent","Reply Received","Meeting Scheduled","Proposal Sent","Won","Rejected"];
+var DRAWER_ACTION_TYPES = ["Email Sent","Follow-up Sent","Reply Received","Portfolio Sent","Meeting Scheduled","Proposal Sent","Won","Rejected"];
+var STATUS_MAP = {
+  "Email Sent":"Contacted","Follow-up Sent":"Follow-up Sent","Reply Received":"Replied",
+  "Portfolio Sent":"Portfolio Sent","Meeting Scheduled":"Meeting Scheduled","Proposal Sent":"Proposal Sent","Won":"Won","Rejected":"Rejected"
+};
+var ALL_STATUSES = ["Not Contacted","Contacted","Follow-up Sent","Replied","Portfolio Sent","Meeting Scheduled","Proposal Sent","Won","Rejected"];
+var CATEGORIES = ["Children's Publishing","Branding","Editorial"]; // = Industries for client records
+var INDUSTRIES = CATEGORIES;
+var SERVICES = ["Branding","Illustration","Book Layout","Editorial Illustration","Portrait Illustration"];
+var SKILLS = ["Character Design","Typography","Packaging","Editorial Layout","Logo Design","Hand Lettering","Color & Mood","Iconography"];
+var CONTENT_CHANNELS = ["behance","instagram","tiktok"];
+var CONTENT_CHANNEL_LABELS = {behance:"Behance", instagram:"Instagram", tiktok:"TikTok"};
+var CONTENT_STATUS_OPTIONS = ["Not Started","Candidate","Posted"];
+var PRIORITIES = ["High","Medium","Low"];
+var FIT_WEIGHTS = {alignment:0.35, budget:0.20, likelihood:0.15, excitement:0.15, strategic:0.15};
+var FIT_LABELS = {alignment:"Alignment with my services", budget:"Budget potential", likelihood:"Likelihood of hiring", excitement:"Personal excitement", strategic:"Strategic value"};
+var PRESETS = [{label:"Tomorrow",days:1},{label:"3 days",days:3},{label:"1 week",days:7},{label:"2 weeks",days:14},{label:"1 month",days:30}];
+
+var SEED = [
+  {company:"Bookmark Africa", category:"Children's Publishing", country:"Kenya", whyFit:"Pre-school and children's picture books", website:"bookmark-africa.com"},
+  {company:"Phoenix Publishers", category:"Children's Publishing", country:"Kenya", whyFit:"Children's readers, fiction, textbooks", website:"phoenixpublishers.co.ke"},
+  {company:"Queenex Publishers", category:"Children's Publishing", country:"Kenya", whyFit:"Nairobi-based children's & general titles", website:"queenexpublishers.co.ke"},
+  {company:"Moran (E.A.) Publishers", category:"Children's Publishing", country:"Kenya", whyFit:"Early-reader interior illustration", website:"moranpublishers.com"},
+  {company:"East African Educational Publishers", category:"Children's Publishing", country:"Kenya", whyFit:"Bilingual English/Swahili children's titles", website:"eastafricanpublishers.com"},
+  {company:"Longhorn Publishers PLC", category:"Children's Publishing", country:"Kenya", whyFit:"Major East African house, strong children's list", website:"longhornpublishers.com"},
+  {company:"Focus Publishers Ltd", category:"Children's Publishing", country:"Kenya", whyFit:"Award-winning African children's & adult titles", website:""},
+  {company:"Flying Eye Books", category:"Children's Publishing", country:"UK", whyFit:"Illustration-led picture books, author-illustrator friendly", website:"flyingeyebooks.com"},
+  {company:"Wacky Bee Books", category:"Children's Publishing", country:"UK", whyFit:"Small indie, picture books & early readers", website:"wackybeebooks.com"},
+  {company:"Floris Books / Kelpies", category:"Children's Publishing", country:"UK", whyFit:"Strong picture-book list, seeks diverse voices", website:"florisbooks.co.uk"},
+  {company:"Innobid", category:"Branding", country:"Kenya", whyFit:"AI procurement startup, no visible brand identity yet", website:""},
+  {company:"Pretium", category:"Branding", country:"Kenya", whyFit:"Fintech/blockchain, needs trust-building identity", website:""},
+  {company:"TIBU Health", category:"Branding", country:"Kenya", whyFit:"Healthtech, needs warm accessible brand system", website:""},
+  {company:"Zerobionic", category:"Branding", country:"Kenya", whyFit:"Disability-led robotics, bold identity opportunity", website:""},
+  {company:"Jekyll & Hyde", category:"Branding", country:"Kenya", whyFit:"New Westlands cocktail bar, needs menu/signage identity", website:""},
+  {company:"AttiFin AI", category:"Branding", country:"UK", whyFit:"Newly funded legal-AI platform, launching without a brand", website:""},
+  {company:"Wonder", category:"Branding", country:"UK", whyFit:"AI filmmaking platform, freshly funded, visual-forward brand", website:""},
+  {company:"Clove", category:"Branding", country:"UK", whyFit:"Early-stage advice platform, still building its look", website:""},
+  {company:"Two Roosters", category:"Branding", country:"UK", whyFit:"Outgrew market-stall branding, just went permanent", website:"tworoosters.co.uk"},
+  {company:"Kiez Kebab", category:"Branding", country:"UK", whyFit:"New concept in a rebranded London space", website:""},
+  {company:"True Love East Africa", category:"Editorial", country:"Kenya", whyFit:"Lifestyle/portrait features, Carole Mandi Media", website:""},
+  {company:"Drum East Africa", category:"Editorial", country:"Kenya", whyFit:"Culture & portrait-driven storytelling", website:""},
+  {company:"Nation Media Group", category:"Editorial", country:"Kenya", whyFit:"East Africa's largest independent media house", website:""},
+  {company:"Breathe Magazine", category:"Editorial", country:"UK", whyFit:"Actively invites illustrators, illustrated covers", website:"breathemagazine.com"},
+  {company:"Creative Boom", category:"Editorial", country:"UK", whyFit:"Accepts art/illustration submissions by email", website:"creativeboom.com"},
+  {company:"Bitch Media", category:"Editorial", country:"USA", whyFit:"Pays $200-600 for editorial/spot illustration", website:""},
+  {company:"Create! Magazine", category:"Editorial", country:"USA", whyFit:"Open art calls, print and digital", website:"createmagazine.co"},
+  {company:"Communication Arts", category:"Editorial", country:"USA", whyFit:"Illustration Annual - prestige exposure, art-buyer directory", website:"commarts.com"},
+  {company:"photoED Magazine", category:"Editorial", country:"Canada", whyFit:"Themed open calls for illustration/art", website:"photoed.ca"},
+  {company:"The Racket Journal", category:"Editorial", country:"USA", whyFit:"Weekly issues, free submissions, art alongside fiction", website:""}
+];
+
+function uid(){ return 'c_' + Math.random().toString(36).slice(2,10); }
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function addDays(dateStr, n){ var d = dateStr ? new Date(dateStr+'T00:00:00') : new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+function fmtDate(s){ if(!s) return '—'; var d=new Date(s+'T00:00:00'); return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}); }
+function daysBetween(a,b){ return Math.round((new Date(b+'T00:00:00') - new Date(a+'T00:00:00'))/86400000); }
+function slug(s){ return s.replace(/\s+/g,'-'); }
+function toggleInArray(arr, val){ var i = arr.indexOf(val); if(i>-1) arr.splice(i,1); else arr.push(val); return arr; }
+
+// ---------- client derived helpers ----------
+function sortedHistory(c){ return (c.history||[]).slice().sort(function(a,b){ return b.date.localeCompare(a.date) || (b.ts||0)-(a.ts||0); }); }
+function derivedStatus(c){ var h = sortedHistory(c); return h.length ? (STATUS_MAP[h[0].type] || 'Not Contacted') : 'Not Contacted'; }
+function derivedLastContact(c){ var h = sortedHistory(c); return h.length ? h[0].date : null; }
+function derivedNextFollowUp(c){ var h = sortedHistory(c); return h.length && h[0].followUpDate ? h[0].followUpDate : null; }
+function weightedFit(fit){
+  fit = fit || {};
+  var total = 0;
+  Object.keys(FIT_WEIGHTS).forEach(function(k){ total += (fit[k]||3) * FIT_WEIGHTS[k]; });
+  return Math.round(total*10)/10;
+}
+function isClosed(c){ var s = derivedStatus(c); return s==='Won' || s==='Rejected'; }
+
+// ---------- project / portfolio helpers ----------
+function projectOutreach(projectId){
+  var out = [];
+  state.clients.forEach(function(c){
+    (c.history||[]).forEach(function(h){
+      if(h.type==='Portfolio Sent' && h.projectIds && h.projectIds.indexOf(projectId)>-1){
+        out.push({clientId:c.id, clientName:c.company, date:h.date});
+      }
+    });
+  });
+  out.sort(function(a,b){ return b.date.localeCompare(a.date); });
+  return out;
+}
+function projectScore(p){ return (p.confidence||3) + (p.commercialValue||3); }
+function bestProjectForClient(client){
+  var pool = state.projects.filter(function(p){ return p.status==='Active'; });
+  if(pool.length===0) return null;
+  var matching = pool.filter(function(p){ return (p.industries||[]).indexOf(client.category)>-1; });
+  var candidates = matching.length ? matching : pool;
+  candidates = candidates.slice().sort(function(a,b){
+    var aSent = projectOutreach(a.id).some(function(o){ return o.clientId===client.id; });
+    var bSent = projectOutreach(b.id).some(function(o){ return o.clientId===client.id; });
+    if(aSent!==bSent) return aSent ? 1 : -1;
+    return projectScore(b) - projectScore(a);
+  });
+  return candidates[0] || null;
+}
+
+function suggestAction(c, today){
+  var status = derivedStatus(c);
+  if(status==='Won' || status==='Rejected') return null;
+  var fit = weightedFit(c.fit);
+  var nextFU = derivedNextFollowUp(c);
+  var lastContact = derivedLastContact(c);
+
+  if(nextFU && nextFU <= today){
+    var overdueBy = daysBetween(nextFU, today);
+    return {label: overdueBy>0 ? 'Follow up now — overdue '+overdueBy+'d' : 'Follow up today', urgency:'high'};
+  }
+  if(status==='Not Contacted'){
+    if(fit>=3.5) return {label:'Send first outreach', urgency:'high'};
+    return {label:'Outreach when time allows', urgency:'low'};
+  }
+  if(status==='Replied'){
+    var best = bestProjectForClient(c);
+    if(best) return {label:'Send "'+best.title+'" — your strongest '+c.category+' piece', urgency:'high'};
+    return {label:'Send '+c.category+' portfolio — next step', urgency:'high'};
+  }
+  if(status==='Portfolio Sent'){
+    var days2 = lastContact ? daysBetween(lastContact, today) : 0;
+    if(days2>=7) return {label:'Check in after portfolio', urgency:'medium'};
+    return {label:'Awaiting response to portfolio', urgency:'low'};
+  }
+  if(status==='Proposal Sent'){
+    var days = lastContact ? daysBetween(lastContact, today) : 0;
+    if(days>=10) return {label:'Check in on proposal', urgency:'medium'};
+    return {label:'Awaiting response', urgency:'low'};
+  }
+  if(status==='Meeting Scheduled') return {label:'Prepare for meeting', urgency:'medium'};
+  if(status==='Contacted' || status==='Follow-up Sent'){
+    if(!nextFU) return {label:'Schedule a follow-up', urgency:'medium'};
+    return {label:'Waiting — follow-up '+fmtDate(nextFU), urgency:'low'};
+  }
+  return {label:'No action needed', urgency:'low'};
+}
+var URGENCY_RANK = {high:0, medium:1, low:2};
+
+var state = {
+  clients: [], projects: [], route: 'dashboard', drawer: null, projectDrawer: null,
+  filterCat: 'All', filterStatus: 'All', search:'', showClosed:false,
+  expandedRow: null,
+  cmdQuery: '', cmdActive: null,
+  tableSortKey: 'company', tableSortDir: 1,
+  portfolioSentPicker: null // clientId currently choosing which project(s) to log as sent
+};
+
+async function loadData(){
+  try{
+    var res = await window.storage.get('clients');
+    state.clients = JSON.parse(res.value);
+  }catch(e){
+    state.clients = SEED.map(function(s, i){
+      return Object.assign({
+        id: uid(), decisionMaker:'', email:'', phone:'', instagram:'', linkedin:'',
+        services:'', priority: i % 3 === 0 ? 'High' : 'Medium',
+        fit:{alignment:4, budget:3, likelihood:3, excitement:4, strategic:3},
+        notes:'', history: []
+      }, s);
+    });
+    await saveClients();
+  }
+  try{
+    var res2 = await window.storage.get('projects');
+    state.projects = JSON.parse(res2.value);
+  }catch(e){
+    state.projects = [];
+    await saveProjects();
+  }
+  render();
+}
+async function saveClients(){
+  try{
+    var result = await window.storage.set('clients', JSON.stringify(state.clients));
+    if(!result){
+      console.error('saveClients: storage.set returned falsy', result);
+      return false;
+    }
+    return true;
+  }catch(e){
+    console.error('saveClients failed:', e);
+    return false;
+  }
+}
+async function saveProjects(){
+  try{
+    var result = await window.storage.set('projects', JSON.stringify(state.projects));
+
+    if(!result){
+      console.error('saveProjects: storage.set returned falsy', result);
+      return false;
+    }
+
+    return true;
+  }catch(e){
+    console.error('saveProjects failed:', e);
+    return false;
+  }
+}
+
+function toast(msg){
+  var el = document.getElementById('ms-toast-el'); if(el) el.remove();
+  var t = document.createElement('div'); t.id='ms-toast-el'; t.className='ms-toast';
+  var span = document.createElement('span'); span.textContent = msg; t.appendChild(span);
+  document.getElementById('ms-app').appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.remove(); }, 2600);
+}
+function showUndoToast(msg, undoFn){
+  var el = document.getElementById('ms-toast-el'); if(el) el.remove();
+  var t = document.createElement('div'); t.id='ms-toast-el'; t.className='ms-toast';
+  var span = document.createElement('span'); span.textContent = msg; t.appendChild(span);
+  var btn = document.createElement('button'); btn.textContent = 'Undo'; btn.className = 'ms-toast-undo';
+  btn.onclick = function(){ if(t.parentNode) t.remove(); undoFn(); };
+  t.appendChild(btn);
+  document.getElementById('ms-app').appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.remove(); }, 6000);
+}
+
+function logOutreach(clientId, type, followUpDate, projectIds){
+  var c = state.clients.find(function(x){ return x.id===clientId; });
+  if(!c) return null;
+  c.history = c.history || [];
+  var entry = {id: uid(), date: todayStr(), ts: Date.now(), type: type, followUpDate: (type==='Won'||type==='Rejected') ? null : (followUpDate || null)};
+  if(projectIds && projectIds.length) entry.projectIds = projectIds;
+  c.history.unshift(entry);
+  saveClients();
+  return entry.id;
+}
+function logWithUndo(clientId, type, followUpDate, projectIds){
+  var c = state.clients.find(function(x){ return x.id===clientId; });
+  if(!c) return null;
+  var entryId = logOutreach(clientId, type, followUpDate, projectIds);
+  return {
+    message: c.company + ' — "' + type + '" logged.',
+    undo: function(){
+      var cc = state.clients.find(function(x){ return x.id===clientId; });
+      if(!cc) return;
+      cc.history = cc.history.filter(function(h){ return h.id !== entryId; });
+      saveClients();
+      render();
+      toast('Undone');
+    }
+  };
+}
+function editHistoryItem(clientId, itemId, field, value){
+  var c = state.clients.find(function(x){ return x.id===clientId; });
+  if(!c) return;
+  var item = (c.history||[]).find(function(h){ return h.id===itemId; });
+  if(!item) return;
+  item[field] = value || null;
+  saveClients();
+}
+function deleteHistoryItem(clientId, itemId){
+  var c = state.clients.find(function(x){ return x.id===clientId; });
+  if(!c) return;
+  var idx = c.history.findIndex(function(h){ return h.id===itemId; });
+  if(idx===-1) return;
+  var removed = c.history[idx]; var removedIdx = idx;
+  c.history.splice(idx,1);
+  saveClients(); render();
+  showUndoToast('Interaction deleted.', function(){
+    var cc = state.clients.find(function(x){ return x.id===clientId; });
+    if(!cc) return;
+    cc.history.splice(removedIdx, 0, removed);
+    saveClients(); render(); toast('Restored');
+  });
+}
+function defaultFollowUp(type){
+  if(type==='Won' || type==='Rejected') return null;
+  if(type==='Meeting Scheduled') return addDays(todayStr(), 1);
+  return addDays(todayStr(), 7);
+}
+
+function renderChips(clientId){
+  var html = '<div class="ms-chiprow">';
+  ACTION_TYPES.forEach(function(t){
+    html += '<button type="button" class="ms-btn small chip" onclick="event.stopPropagation(); MS.logQuick(\''+clientId+'\',\''+t+'\')">'+t+'</button>';
+  });
+  html += '<button type="button" class="ms-btn small chip" style="border-color:var(--plum);color:var(--plum);" onclick="event.stopPropagation(); MS.openDrawer(\''+clientId+'\')">Portfolio Sent (open profile) →</button>';
+  html += '</div><p class="ms-row-meta" style="margin-top:8px;">Logs instantly with a sensible follow-up date. Need a custom date? <a href="#" onclick="event.preventDefault(); MS.openDrawer(\''+clientId+'\')" style="color:var(--terracotta-dark);">Open full profile →</a></p>';
+  return html;
+}
+
+// ================= DASHBOARD ("Today") =================
+function renderDashboard(){
+  var today = todayStr();
+  var active = state.clients.filter(function(c){ return !isClosed(c); });
+
+  var suggestions = active.map(function(c){ return {client:c, s: suggestAction(c, today)}; })
+    .filter(function(x){ return x.s; })
+    .sort(function(a,b){ return URGENCY_RANK[a.s.urgency]-URGENCY_RANK[b.s.urgency]; });
+
+  var contacted = state.clients.filter(function(c){ return derivedStatus(c)!=='Not Contacted'; }).length;
+  var replied = state.clients.filter(function(c){ var s=derivedStatus(c); return ['Replied','Portfolio Sent','Meeting Scheduled','Proposal Sent','Won'].indexOf(s)>-1; }).length;
+  var won = state.clients.filter(function(c){ return derivedStatus(c)==='Won'; }).length;
+  var responseRate = contacted ? Math.round(replied/contacted*100) : 0;
+  var avgFit = state.clients.length ? Math.round(state.clients.reduce(function(s,c){ return s+weightedFit(c.fit); },0)/state.clients.length*10)/10 : 0;
+
+  var catNudges = CATEGORIES.map(function(cat){
+    var inCat = state.clients.filter(function(c){ return c.category===cat; });
+    var lastAny = inCat.reduce(function(max,c){ var lc=derivedLastContact(c); return (lc && (!max || lc>max)) ? lc : max; }, null);
+    var quiet = !lastAny || daysBetween(lastAny, today) >= 7;
+    return quiet ? cat : null;
+  }).filter(Boolean);
+
+  var html = '';
+  html += '<div class="ms-pagehead"><div><h1 class="ms-pagetitle">Today</h1><p class="ms-pagesub">'+today.split('-').reverse().join('/')+' &middot; what should I do right now?</p></div>'+
+    '<button class="ms-btn" onclick="MS.go(\'clients\')">Directory</button></div>';
+
+  html += '<div class="ms-cmdbar">';
+  html += '<input class="ms-cmdinput" placeholder="Tell Michelle what happened… e.g. type a client name" value="'+state.cmdQuery.replace(/"/g,'&quot;')+'" oninput="MS.cmdType(this.value)" />';
+  html += '<span class="ms-cmdicon">⏎</span>';
+  if(state.cmdQuery && !state.cmdActive){
+    var matches = state.clients.filter(function(c){ return c.company.toLowerCase().indexOf(state.cmdQuery.toLowerCase())>-1; }).slice(0,5);
+    if(matches.length){
+      html += '<div class="ms-cmddropdown">';
+      matches.forEach(function(c){
+        html += '<div class="ms-cmdoption" onclick="MS.cmdSelect(\''+c.id+'\')"><span>'+c.company+'</span><span class="ms-row-meta">'+c.category+'</span></div>';
+      });
+      html += '</div>';
+    }
+  }
+  if(state.cmdActive){
+    var cc = state.clients.find(function(x){ return x.id===state.cmdActive; });
+    if(cc){
+      html += '<div class="ms-cmdpanel"><div class="ms-cmdpanel-head"><span>What happened with '+cc.company+'?</span><button class="ms-x" style="font-size:16px;" onclick="MS.cmdClear()">&times;</button></div>'+
+        renderChips(cc.id) + '</div>';
+    }
+  }
+  html += '</div>';
+
+  html += '<div class="ms-panel"><p class="ms-panel-title">What needs your attention <span class="ms-mono" style="font-weight:400;color:var(--ink-faint)">'+suggestions.length+'</span></p>';
+  if(suggestions.length===0){ html += '<p class="ms-empty">Nothing urgent — you\'re caught up.</p>'; }
+  suggestions.slice(0,10).forEach(function(x){
+    var expanded = state.expandedRow === x.client.id;
+    html += '<div class="ms-actionrow">';
+    html += '<div class="ms-actionrow-top" onclick="MS.toggleExpand(\''+x.client.id+'\')">';
+    html += '<div class="ms-urgency u-'+x.s.urgency+'"></div>';
+    html += '<div style="flex:1;"><p class="ms-row-name">'+x.client.company+'</p><p class="ms-row-suggest">'+x.s.label+'</p></div>';
+    html += '<button class="ms-btn small" onclick="event.stopPropagation(); MS.openDrawer(\''+x.client.id+'\')">Open full profile →</button>';
+    html += '</div>';
+    if(expanded){
+      html += '<div class="ms-actionrow-expand">'+renderChips(x.client.id)+'</div>';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+
+  if(catNudges.length){
+    html += '<div class="ms-panel"><p class="ms-panel-title">Category nudges</p>';
+    catNudges.forEach(function(cat){
+      html += '<div class="ms-actionrow" style="border-bottom:none;padding:6px 0;display:flex;justify-content:space-between;align-items:center;">'+
+        '<p class="ms-row-name">You haven\'t contacted any '+cat+' clients this week</p>'+
+        '<button class="ms-btn small" onclick="MS.go(\'clients\',{cat:\''+cat+'\'})">View</button></div>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div class="ms-footerstats">'+
+    '<span><b>'+state.clients.length+'</b> tracked</span><span class="sep">·</span>'+
+    '<span><b>'+responseRate+'%</b> response rate</span><span class="sep">·</span>'+
+    '<span><b>'+avgFit+'</b> avg fit</span><span class="sep">·</span>'+
+    '<span><b>'+won+'</b> won</span>'+
+  '</div>';
+
+  return html;
+}
+
+// ================= TARGET CLIENTS ("directory") =================
+function renderClients(){
+  var html = '';
+  html += '<div class="ms-pagehead"><div><h1 class="ms-pagetitle">Target Clients</h1><p class="ms-pagesub">Who can I work with? — browse, add, and maintain the database</p></div>'+
+    '<button class="ms-btn primary" onclick="MS.openDrawer(null)">+ Add client</button></div>';
+
+  html += '<div class="ms-filters">';
+  html += '<select class="ms-select" onchange="MS.setFilter(\'cat\', this.value)">'+
+    '<option value="All"'+(state.filterCat==='All'?' selected':'')+'>All categories</option>'+
+    CATEGORIES.map(function(c){ return '<option value="'+c+'"'+(state.filterCat===c?' selected':'')+'>'+c+'</option>'; }).join('')+
+    '</select>';
+  html += '<select class="ms-select" onchange="MS.setFilter(\'status\', this.value)">'+
+    '<option value="All"'+(state.filterStatus==='All'?' selected':'')+'>All statuses</option>'+
+    ALL_STATUSES.map(function(s){ return '<option value="'+s+'"'+(state.filterStatus===s?' selected':'')+'>'+s+'</option>'; }).join('')+
+    '</select>';
+  html += '<input class="ms-input" placeholder="Search company…" value="'+state.search+'" oninput="MS.setFilter(\'search\', this.value)" />';
+  html += '<label class="ms-checkbox-label"><input type="checkbox" '+(state.showClosed?'checked':'')+' onchange="MS.setFilter(\'showClosed\', this.checked)"/> Show won/rejected</label>';
+  html += '</div>';
+
+  var list = state.clients.filter(function(c){
+    if(state.filterCat!=='All' && c.category!==state.filterCat) return false;
+    var st = derivedStatus(c);
+    if(state.filterStatus!=='All' && st!==state.filterStatus) return false;
+    if(!state.showClosed && isClosed(c) && state.filterStatus==='All') return false;
+    if(state.search && c.company.toLowerCase().indexOf(state.search.toLowerCase())===-1) return false;
+    return true;
+  });
+
+  var key = state.tableSortKey, dir = state.tableSortDir;
+  list.sort(function(a,b){
+    var av, bv;
+    if(key==='company'){ av=a.company.toLowerCase(); bv=b.company.toLowerCase(); }
+    else if(key==='category'){ av=a.category; bv=b.category; }
+    else if(key==='country'){ av=a.country; bv=b.country; }
+    else if(key==='fit'){ av=weightedFit(a.fit); bv=weightedFit(b.fit); }
+    else { av=a.company.toLowerCase(); bv=b.company.toLowerCase(); }
+    if(av<bv) return -1*dir; if(av>bv) return 1*dir; return 0;
+  });
+
+  function th(label,k){ return '<th onclick="MS.sortTable(\''+k+'\')">'+label+(state.tableSortKey===k?(state.tableSortDir===1?' ▲':' ▼'):'')+'</th>'; }
+
+  html += '<table class="ms-table"><thead><tr>'+th('Company','company')+th('Category','category')+th('Country','country')+'<th>Priority</th>'+th('Fit','fit')+'<th>Status</th></tr></thead><tbody>';
+  if(list.length===0){ html += '<tr><td colspan="6" class="ms-empty">No clients match these filters.</td></tr>'; }
+  list.forEach(function(c){
+    var st = derivedStatus(c);
+    html += '<tr>'+
+      '<td class="click" onclick="MS.openDrawer(\''+c.id+'\')"><strong>'+c.company+'</strong></td>'+
+      '<td class="click" onclick="MS.openDrawer(\''+c.id+'\')">'+c.category+'</td>'+
+      '<td class="click" onclick="MS.openDrawer(\''+c.id+'\')">'+c.country+'</td>'+
+      '<td class="click" onclick="MS.openDrawer(\''+c.id+'\')"><span class="priority-dot p-'+c.priority+'"></span>'+c.priority+'</td>'+
+      '<td class="click ms-fit" onclick="MS.openDrawer(\''+c.id+'\')">'+weightedFit(c.fit)+'</td>'+
+      '<td class="click" onclick="MS.openDrawer(\''+c.id+'\')"><span class="ms-pill pill-'+slug(st)+'">'+st+'</span></td>'+
+      '</tr>';
+  });
+  html += '</tbody></table>';
+  return html;
+}
+
+// ================= PORTFOLIO INTELLIGENCE =================
+function activeClientCountForIndustry(industry){
+  return state.clients.filter(function(c){ return c.category===industry && !isClosed(c); }).length;
+}
+function computeCoverageGaps(){
+  var gaps = [];
+  INDUSTRIES.forEach(function(ind){
+    var projCount = state.projects.filter(function(p){ return (p.industries||[]).indexOf(ind)>-1 && p.status==='Active'; }).length;
+    var clientCount = activeClientCountForIndustry(ind);
+    if(clientCount>0 && projCount===0){
+      gaps.push({label:'No portfolio piece for '+ind+' — '+clientCount+' active client'+(clientCount>1?'s':'')+' waiting', urgency:'high'});
+    } else if(clientCount>0 && projCount===1){
+      gaps.push({label:'Only one '+ind+' piece — thin coverage for '+clientCount+' active clients', urgency:'medium'});
+    }
+  });
+  SERVICES.forEach(function(svc){
+    var strong = state.projects.filter(function(p){ return (p.services||[]).indexOf(svc)>-1 && p.confidence>=4 && p.status==='Active'; }).length;
+    if(strong===0){
+      gaps.push({label:'No strong case study yet for '+svc, urgency:'medium'});
+    }
+  });
+  return gaps.sort(function(a,b){ return URGENCY_RANK[a.urgency]-URGENCY_RANK[b.urgency]; });
+}
+function computeContentBacklog(){
+  var items = [];
+  state.projects.filter(function(p){ return p.status==='Active' && p.confidence>=4; }).forEach(function(p){
+    CONTENT_CHANNELS.forEach(function(ch){
+      var st = (p.content && p.content[ch]) || 'Not Started';
+      if(st!=='Posted'){
+        items.push({project:p, channel:ch, label:'"'+p.title+'" → '+CONTENT_CHANNEL_LABELS[ch]+' candidate ('+st+')'});
+      }
+    });
+  });
+  return items.slice(0,8);
+}
+function computeStale(){
+  var today = todayStr();
+  return state.projects.filter(function(p){ return p.status==='Active' && p.completedDate; })
+    .map(function(p){ return {p:p, age: daysBetween(p.completedDate, today)}; })
+    .filter(function(x){ return x.age >= 365; })
+    .sort(function(a,b){ return b.age-a.age; })
+    .slice(0,5);
+}
+function computeUnused(){
+  var today = todayStr();
+  return state.projects.filter(function(p){ return p.status==='Active'; }).map(function(p){
+    var hist = projectOutreach(p.id);
+    var lastUsed = hist.length ? hist[0].date : null;
+    return {p:p, lastUsed:lastUsed, daysSince: lastUsed ? daysBetween(lastUsed, today) : null};
+  }).filter(function(x){ return !x.lastUsed || x.daysSince>=60; })
+    .sort(function(a,b){ return (b.daysSince||9999)-(a.daysSince||9999); })
+    .slice(0,5);
+}
+
+function renderPortfolio(){
+  var gaps = computeCoverageGaps();
+  var backlog = computeContentBacklog();
+  var stale = computeStale();
+  var unused = computeUnused();
+
+  var html = '';
+  html += '<div class="ms-pagehead"><div><h1 class="ms-pagetitle">Portfolio</h1><p class="ms-pagesub">What work should I show?</p></div>'+
+    '<div style="display:flex;gap:8px;"><button class="ms-btn" onclick="MS.go(\'portfolioAll\')">Browse all projects →</button>'+
+    '<button class="ms-btn primary" onclick="MS.openProjectDrawer(null)">+ Add project</button></div></div>';
+
+  if(state.projects.length===0){
+    html += '<div class="ms-panel"><p class="ms-empty">No projects yet. Add your first completed project and Portfolio will start telling you where your coverage gaps are, what to post, and what to send to which client.</p></div>';
+    return html;
+  }
+
+  html += '<div class="ms-panel"><p class="ms-panel-title">Coverage gaps <span class="ms-mono" style="font-weight:400;color:var(--ink-faint)">'+gaps.length+'</span></p>';
+  if(gaps.length===0){ html += '<p class="ms-empty">Every industry and service you actively pitch has solid coverage.</p>'; }
+  gaps.slice(0,6).forEach(function(g){
+    html += '<div class="ms-actionrow" style="display:flex;align-items:center;gap:10px;"><div class="ms-urgency u-'+g.urgency+'"></div><p class="ms-row-name" style="flex:1;">'+g.label+'</p></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="ms-panel"><p class="ms-panel-title">Content backlog <span class="ms-mono" style="font-weight:400;color:var(--ink-faint)">'+backlog.length+'</span></p>';
+  if(backlog.length===0){ html += '<p class="ms-empty">No strong pieces waiting to become content right now.</p>'; }
+  backlog.forEach(function(item){
+    html += '<div class="ms-actionrow" style="display:flex;justify-content:space-between;align-items:center;"><p class="ms-row-name">'+item.label+'</p>'+
+      '<button class="ms-btn small" onclick="MS.openProjectDrawer(\''+item.project.id+'\')">Open</button></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="ms-panel"><p class="ms-panel-title">Getting stale</p>';
+  if(stale.length===0){ html += '<p class="ms-empty">Nothing over a year old yet.</p>'; }
+  stale.forEach(function(x){
+    html += '<div class="ms-actionrow" style="display:flex;justify-content:space-between;align-items:center;"><div><p class="ms-row-name">'+x.p.title+'</p><p class="ms-row-meta">'+Math.round(x.age/30)+' months old</p></div>'+
+      '<button class="ms-btn small" onclick="MS.openProjectDrawer(\''+x.p.id+'\')">Open</button></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="ms-panel"><p class="ms-panel-title">Unused in outreach</p>';
+  if(unused.length===0){ html += '<p class="ms-empty">Everything active has been used recently.</p>'; }
+  unused.forEach(function(x){
+    html += '<div class="ms-actionrow" style="display:flex;justify-content:space-between;align-items:center;"><div><p class="ms-row-name">'+x.p.title+'</p><p class="ms-row-meta">'+(x.lastUsed?('last sent '+fmtDate(x.lastUsed)):'never sent')+'</p></div>'+
+      '<button class="ms-btn small" onclick="MS.openProjectDrawer(\''+x.p.id+'\')">Open</button></div>';
+  });
+  html += '</div>';
+
+  return html;
+}
+
+function renderPortfolioAll(){
+  var html = '';
+  html += '<div class="ms-pagehead"><div><h1 class="ms-pagetitle">All Projects</h1><p class="ms-pagesub">The full portfolio directory</p></div>'+
+    '<div style="display:flex;gap:8px;"><button class="ms-btn" onclick="MS.go(\'portfolio\')">← Back to Portfolio</button>'+
+    '<button class="ms-btn primary" onclick="MS.openProjectDrawer(null)">+ Add project</button></div></div>';
+
+  html += '<table class="ms-table"><thead><tr><th>Title</th><th>Services</th><th>Industries</th><th>Confidence</th><th>Commercial</th><th>Status</th></tr></thead><tbody>';
+  if(state.projects.length===0){ html += '<tr><td colspan="6" class="ms-empty">No projects yet.</td></tr>'; }
+  state.projects.forEach(function(p){
+    html += '<tr>'+
+      '<td class="click" onclick="MS.openProjectDrawer(\''+p.id+'\')"><strong>'+p.title+'</strong><div class="ms-row-meta">'+(p.completedDate?fmtDate(p.completedDate):'undated')+'</div></td>'+
+      '<td class="click" onclick="MS.openProjectDrawer(\''+p.id+'\')">'+(p.services||[]).map(function(s){ return '<span class="ms-pill pill-tag">'+s+'</span>'; }).join(' ')+'</td>'+
+      '<td class="click" onclick="MS.openProjectDrawer(\''+p.id+'\')">'+(p.industries||[]).map(function(s){ return '<span class="ms-pill pill-tag">'+s+'</span>'; }).join(' ')+'</td>'+
+      '<td class="click ms-fit" onclick="MS.openProjectDrawer(\''+p.id+'\')">'+p.confidence+'/5</td>'+
+      '<td class="click ms-fit" onclick="MS.openProjectDrawer(\''+p.id+'\')">'+p.commercialValue+'/5</td>'+
+      '<td class="click" onclick="MS.openProjectDrawer(\''+p.id+'\')"><span class="ms-pill '+(p.status==='Active'?'pill-Replied':'pill-Not-Contacted')+'">'+p.status+'</span></td>'+
+      '</tr>';
+  });
+  html += '</tbody></table>';
+  return html;
+}
+
+function chkGroup(fieldName, options, selected, cls){
+  var html = '<div class="ms-chkgrid">';
+  options.forEach(function(o){
+    var on = selected.indexOf(o)>-1;
+    html += '<span class="ms-chk '+(on?'on '+cls:'')+'" onclick="MS.toggleProjectTag(\''+fieldName+'\',\''+o.replace(/'/g,"\\'")+'\')">'+o+'</span>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderProjectDrawer(){
+  var p = state.projectDrawer;
+  var isNew = !p || !p.id;
+  var d = p || {title:'',completedDate:'',status:'Active',services:[],industries:[],skills:[],confidence:3,commercialValue:3,content:{behance:'Not Started',instagram:'Not Started',tiktok:'Not Started'},links:{behance:'',instagram:'',tiktok:''},processFiles:'',finalDeliverable:'',notes:''};
+
+  var html = '<div class="ms-overlay" onclick="if(event.target===this) MS.closeProjectDrawer()"><div class="ms-drawer">';
+  html += '<div class="ms-drawer-head"><h2 class="ms-drawer-title">'+(isNew?'New project':d.title)+'</h2><button class="ms-x" onclick="MS.closeProjectDrawer()">&times;</button></div>';
+
+  html += '<form id="ms-pform" onsubmit="MS.saveProjectForm(event)">';
+  html += '<div class="ms-field"><label>Title</label><input name="title" type="text" value="'+(d.title||'').replace(/"/g,'&quot;')+'" oninput="MS.updateProjectField(\'title\',this.value)" required /></div>';
+  html += '<div class="ms-fieldrow"><div class="ms-field"><label>Completed date</label><input name="completedDate" type="date" value="'+(d.completedDate||'')+'" oninput="MS.updateProjectField(\'completedDate\',this.value)" /></div>'+
+    '<div class="ms-field"><label>Status</label><select name="status" onchange="MS.updateProjectField(\'status\',this.value)"><option'+(d.status==='Active'?' selected':'')+'>Active</option><option'+(d.status==='Archived'?' selected':'')+'>Archived</option></select></div></div>';
+
+  html += '<p class="ms-sectionlabel">Classification</p>';
+  html += '<div class="ms-field"><label>Services</label>'+chkGroup('services',SERVICES,d.services||[],'svc')+'</div>';
+  html += '<div class="ms-field"><label>Industries</label>'+chkGroup('industries',INDUSTRIES,d.industries||[],'')+'</div>';
+  html += '<div class="ms-field"><label>Skills used</label>'+chkGroup('skills',SKILLS,d.skills||[],'skl')+'</div>';
+
+  html += '<p class="ms-sectionlabel">Scoring</p>';
+  html += '<div class="ms-fitrow"><label>Confidence — how artistically strong is this piece?</label><input type="range" min="1" max="5" value="'+d.confidence+'" oninput="document.getElementById(\'conf-val\').textContent=this.value; MS.updateProjectField(\'confidence\',parseInt(this.value,10));" id="conf-slider" /><span class="ms-fitval" id="conf-val">'+d.confidence+'</span></div>';
+  html += '<div class="ms-fitrow"><label>Commercial value — how likely to win a client?</label><input type="range" min="1" max="5" value="'+d.commercialValue+'" oninput="document.getElementById(\'comm-val\').textContent=this.value; MS.updateProjectField(\'commercialValue\',parseInt(this.value,10));" id="comm-slider" /><span class="ms-fitval" id="comm-val">'+d.commercialValue+'</span></div>';
+
+  html += '<p class="ms-sectionlabel">Content status</p>';
+  CONTENT_CHANNELS.forEach(function(ch){
+    var chStatus = (d.content && d.content[ch]) || 'Not Started';
+    var isCandidate = chStatus === 'Candidate';
+    html += '<div class="ms-fieldrow"><div class="ms-field"><label>'+CONTENT_CHANNEL_LABELS[ch]+' status</label><select name="content_'+ch+'" onchange="MS.updateContentStatus(\''+ch+'\',this.value)">'+
+      CONTENT_STATUS_OPTIONS.map(function(o){ return '<option'+(chStatus===o?' selected':'')+'>'+o+'</option>'; }).join('')+'</select></div>'+
+      '<div class="ms-field"><label>'+CONTENT_CHANNEL_LABELS[ch]+' link'+(isCandidate?' <span class="ms-row-meta">(disabled while Candidate)</span>':'')+'</label>'+
+      '<input name="link_'+ch+'" type="text" value="'+((d.links&&d.links[ch])||'').replace(/"/g,'&quot;')+'" placeholder="'+(isCandidate?'Not published yet':'optional URL')+'"'+
+      (isCandidate?' disabled title="Move status off Candidate to add a link"':'')+
+      ' oninput="MS.updateProjectNestedField(\'links\',\''+ch+'\',this.value)" /></div></div>';
+  });
+
+  html += '<p class="ms-sectionlabel">Files</p>';
+  html += '<div class="ms-field"><label>Process files (link or note)</label><input name="processFiles" type="text" value="'+(d.processFiles||'').replace(/"/g,'&quot;')+'" oninput="MS.updateProjectField(\'processFiles\',this.value)" /></div>';
+  html += '<div class="ms-field"><label>Final deliverable (link or note)</label><input name="finalDeliverable" type="text" value="'+(d.finalDeliverable||'').replace(/"/g,'&quot;')+'" oninput="MS.updateProjectField(\'finalDeliverable\',this.value)" /></div>';
+  html += '<div class="ms-field"><label>Notes</label><textarea name="notes" oninput="MS.updateProjectField(\'notes\',this.value)">'+(d.notes||'')+'</textarea></div>';
+
+  html += '<div style="display:flex;gap:8px;margin-top:16px;"><button type="submit" class="ms-btn primary">Save project</button>'+
+    (isNew?'':'<button type="button" class="ms-btn" onclick="MS.deleteProject()">Delete</button>')+'</div>';
+  html += '</form>';
+
+  if(!isNew){
+    var hist = projectOutreach(d.id);
+    html += '<div class="ms-panel" style="margin-top:20px;"><p class="ms-panel-title">Sent to <span class="ms-mono" style="font-weight:400;color:var(--ink-faint)">'+hist.length+'</span></p>';
+    if(hist.length===0){ html += '<p class="ms-empty">Never sent in outreach yet.</p>'; }
+    hist.forEach(function(h){
+      html += '<div class="ms-actionrow" style="padding:8px 0;display:flex;justify-content:space-between;"><p class="ms-row-name">'+h.clientName+'</p><p class="ms-row-meta">'+fmtDate(h.date)+'</p></div>';
+    });
+    html += '</div>';
+  }
+
+  html += '</div></div>';
+  return html;
+}
+
+// ================= DRAWER (client) =================
+function renderDrawer(){
+  var c = state.drawer;
+  var isNew = !c || !c.id;
+  var d = c || {company:'',category:CATEGORIES[0],country:'',website:'',instagram:'',linkedin:'',decisionMaker:'',email:'',phone:'',services:'',priority:'Medium',fit:{alignment:3,budget:3,likelihood:3,excitement:3,strategic:3},whyFit:'',notes:'',history:[]};
+  var status = isNew ? 'Not Contacted' : derivedStatus(d);
+  var lastContact = isNew ? null : derivedLastContact(d);
+
+  var html = '<div class="ms-overlay" onclick="if(event.target===this) MS.closeDrawer()"><div class="ms-drawer">';
+  html += '<div class="ms-drawer-head"><h2 class="ms-drawer-title">'+(isNew?'New client':d.company)+'</h2><button class="ms-x" onclick="MS.closeDrawer()">&times;</button></div>';
+  if(!isNew){
+    html += '<div class="ms-status-header"><span class="ms-pill pill-'+slug(status)+'">'+status+'</span><span class="ms-row-meta">Last contact: '+(lastContact?fmtDate(lastContact):'never')+'</span></div>';
+  }
+
+  html += '<form id="ms-form" onsubmit="MS.saveForm(event)">';
+
+  html += '<p class="ms-sectionlabel">Company</p>';
+  html += field('company','Company','text',d.company,true);
+  html += '<div class="ms-fieldrow">'+selectField('category','Category',CATEGORIES,d.category)+field('country','Country','text',d.country)+'</div>';
+  html += '<div class="ms-fieldrow">'+field('website','Website','text',d.website)+field('instagram','Instagram','text',d.instagram)+'</div>';
+  html += '<div class="ms-fieldrow">'+field('linkedin','LinkedIn','text',d.linkedin)+field('decisionMaker','Decision maker','text',d.decisionMaker)+'</div>';
+  html += '<div class="ms-fieldrow">'+field('email','Email','text',d.email)+field('phone','Phone','text',d.phone)+'</div>';
+  html += field('services','Services they may need','text',d.services);
+  html += textareaField('whyFit','Why they\'re a good fit',d.whyFit);
+
+  html += '<p class="ms-sectionlabel">Relationship</p>';
+  html += '<div class="ms-field"><label>Priority</label>'+selectFieldRaw('priority',PRIORITIES,d.priority)+'</div>';
+
+  html += '<div class="ms-field"><label>Client fit (weighted, auto-calculated)</label>';
+  Object.keys(FIT_WEIGHTS).forEach(function(k){
+    var val = (d.fit && d.fit[k]) || 3;
+    html += '<div class="ms-fitrow"><label>'+FIT_LABELS[k]+' <span class="ms-row-meta">('+Math.round(FIT_WEIGHTS[k]*100)+'%)</span></label>'+
+      '<input type="range" min="1" max="5" step="1" value="'+val+'" data-fitkey="'+k+'" oninput="MS.onFitChange(this)" />'+
+      '<span class="ms-fitval" id="fitval-'+k+'">'+val+'</span></div>';
+  });
+  html += '<div class="ms-fit-total"><span>Client Fit Score</span><b id="fit-total">'+weightedFit(d.fit)+'</b></div>';
+  html += '</div>';
+
+  html += textareaField('notes','Notes',d.notes);
+
+  html += '<div style="display:flex;gap:8px;margin-top:16px;"><button type="submit" class="ms-btn primary">Save client</button>'+
+    (isNew?'':'<button type="button" class="ms-btn" onclick="MS.deleteClient()">Delete</button>')+'</div>';
+  html += '</form>';
+
+  if(!isNew){
+    html += '<div class="ms-panel" style="margin-top:20px;"><p class="ms-panel-title">Log outreach</p>';
+    html += '<div class="ms-field"><label>Action</label><select id="log-action" onchange="MS.onLogActionChange(this.value)">'+DRAWER_ACTION_TYPES.map(function(t){ return '<option value="'+t+'">'+t+'</option>'; }).join('')+'</select></div>';
+    html += '<div id="portfolio-picker" style="display:none;" class="ms-field"><label>Which project(s)?</label>'+
+      '<div class="ms-chkgrid" id="portfolio-picker-chips">'+state.projects.map(function(pr){ return '<span class="ms-chk" data-pid="'+pr.id+'" onclick="MS.togglePickProject(this)">'+pr.title+'</span>'; }).join('')+'</div>'+
+      (state.projects.length===0 ? '<p class="ms-row-meta">No projects yet — add one in Portfolio first.</p>' : '')+
+      '</div>';
+    html += '<div class="ms-field"><label>Schedule next follow-up</label><div class="ms-presetrow" id="preset-row">'+
+      PRESETS.map(function(p,i){ return '<button type="button" class="ms-preset'+(i===2?' selected':'')+'" data-days="'+p.days+'" onclick="MS.pickPreset(this)">'+p.label+'</button>'; }).join('')+
+      '<button type="button" class="ms-preset" data-days="custom" onclick="MS.pickPreset(this)">Custom</button>'+
+      '<button type="button" class="ms-preset" data-days="none" onclick="MS.pickPreset(this)">No follow-up</button>'+
+      '</div><input type="date" id="preset-custom-date" style="display:none;margin-top:6px;" class="ms-input" /></div>';
+    html += '<button type="button" class="ms-btn primary" onclick="MS.logFromDrawer()">Log this outreach</button>';
+    html += '</div>';
+
+    html += '<div class="ms-panel"><p class="ms-panel-title">Interaction history <span class="ms-row-meta" style="font-weight:400;">editable</span></p>';
+    var h = sortedHistory(d);
+    if(h.length===0){ html += '<p class="ms-empty">No interactions logged yet.</p>'; }
+    else {
+      html += '<div class="ms-histrow" style="border-bottom:1px solid var(--line-strong);">'+
+        '<span class="ms-histlabel">Action</span><span class="ms-histlabel">Date</span><span class="ms-histlabel">Follow-up</span><span></span></div>';
+      h.forEach(function(item){
+        html += '<div class="ms-histrow">';
+        html += '<select onchange="MS.editHistory(\''+d.id+'\',\''+item.id+'\',\'type\',this.value)">'+
+          DRAWER_ACTION_TYPES.map(function(t){ return '<option value="'+t+'"'+(t===item.type?' selected':'')+'>'+t+'</option>'; }).join('')+'</select>';
+        html += '<input type="date" value="'+(item.date||'')+'" onchange="MS.editHistory(\''+d.id+'\',\''+item.id+'\',\'date\',this.value)" />';
+        html += '<input type="date" value="'+(item.followUpDate||'')+'" onchange="MS.editHistory(\''+d.id+'\',\''+item.id+'\',\'followUpDate\',this.value)" />';
+        html += '<button type="button" class="ms-histrow-del" title="Delete interaction" onclick="MS.deleteHistory(\''+d.id+'\',\''+item.id+'\')">&times;</button>';
+        html += '</div>';
+        if(item.type==='Portfolio Sent' && item.projectIds && item.projectIds.length){
+          var names = item.projectIds.map(function(pid){ var pr = state.projects.find(function(x){return x.id===pid;}); return pr?pr.title:'(deleted project)'; }).join(', ');
+          html += '<p class="ms-row-meta" style="margin:-4px 0 6px 2px;">→ '+names+'</p>';
+        }
+      });
+    }
+    html += '</div>';
+  }
+
+  html += '</div></div>';
+  return html;
+
+  function field(name,label,type,val,req){
+    return '<div class="ms-field"><label>'+label+'</label><input name="'+name+'" type="'+type+'" value="'+(val||'').replace(/"/g,'&quot;')+'" '+(req?'required':'')+' /></div>';
+  }
+  function textareaField(name,label,val){
+    return '<div class="ms-field"><label>'+label+'</label><textarea name="'+name+'">'+(val||'')+'</textarea></div>';
+  }
+  function selectField(name,label,opts,val){
+    return '<div class="ms-field"><label>'+label+'</label>'+selectFieldRaw(name,opts,val)+'</div>';
+  }
+  function selectFieldRaw(name,opts,val){
+    return '<select name="'+name+'">'+opts.map(function(o){ return '<option value="'+o+'"'+(o===val?' selected':'')+'>'+o+'</option>'; }).join('')+'</select>';
+  }
+}
+
+// ================= NAV / SHELL =================
+function renderNav(){
+  var items = [{id:'dashboard', label:'Today'}, {id:'clients', label:'Target Clients'}, {id:'portfolio', label:'Portfolio'}];
+  var future = ['Process library','Content planner','Finance','Weekly review'];
+  var html = '<div class="ms-nav"><p class="ms-brand">Michelle Studio</p><p class="ms-brand-sub">Creative operating system</p>';
+  items.forEach(function(it){
+    var activeRoute = state.route===it.id || (it.id==='portfolio' && state.route==='portfolioAll');
+    html += '<div class="ms-navitem '+(activeRoute?'active':'')+'" onclick="MS.go(\''+it.id+'\')"><span class="ms-navdot"></span>'+it.label+'</div>';
+  });
+  html += '<p class="ms-navgroup-label">Coming next</p>';
+  future.forEach(function(f){
+    html += '<div class="ms-navitem locked"><span class="ms-navdot" style="background:var(--ink-faint)"></span>'+f+'</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function render(){
+  var app = document.getElementById('ms-app');
+  var page;
+  if(state.route==='dashboard') page = renderDashboard();
+  else if(state.route==='clients') page = renderClients();
+  else if(state.route==='portfolio') page = renderPortfolio();
+  else if(state.route==='portfolioAll') page = renderPortfolioAll();
+  else page = renderDashboard();
+
+  var inner = '<div style="position:relative;flex:1;display:flex;">';
+  inner += renderNav();
+  inner += '<div class="ms-main">'+page+'</div>';
+  if(state.drawer!==null && state.drawer!==undefined) inner += renderDrawer();
+  if(state.projectDrawer!==null && state.projectDrawer!==undefined) inner += renderProjectDrawer();
+  inner += '</div>';
+  app.innerHTML = inner;
+
+  if(state.drawer && document.getElementById('portfolio-picker') && state._pendingProjectPick){
+    document.querySelectorAll('#portfolio-picker-chips .ms-chk').forEach(function(el){
+      if(state._pendingProjectPick.indexOf(el.dataset.pid)>-1) el.classList.add('on');
+    });
+  }
+}
+
+window.MS = {
+  go: function(route, filters){
+    state.route = route;
+    if(filters && filters.status){ state.filterStatus = filters.status; state.showClosed = true; }
+    if(filters && filters.cat){ state.filterCat = filters.cat; }
+    render();
+  },
+  setFilter: function(key, val){
+    if(key==='cat') state.filterCat = val;
+    if(key==='status') state.filterStatus = val;
+    if(key==='search') state.search = val;
+    if(key==='showClosed') state.showClosed = val;
+    render();
+  },
+  sortTable: function(key){
+    if(state.tableSortKey===key){ state.tableSortDir *= -1; } else { state.tableSortKey = key; state.tableSortDir = 1; }
+    render();
+  },
+  toggleExpand: function(id){
+    state.expandedRow = state.expandedRow===id ? null : id;
+    render();
+  },
+  cmdType: function(v){
+    state.cmdQuery = v; state.cmdActive = null;
+    render();
+    var el = document.querySelector('.ms-cmdinput');
+    if(el){ el.focus(); el.selectionStart = el.selectionEnd = el.value.length; }
+  },
+  cmdSelect: function(id){ state.cmdActive = id; state.cmdQuery = ''; render(); },
+  cmdClear: function(){ state.cmdActive = null; state.cmdQuery = ''; render(); },
+  logQuick: function(id, type){
+    var pending = logWithUndo(id, type, defaultFollowUp(type));
+    state.expandedRow = null; state.cmdActive = null; state.cmdQuery = '';
+    render();
+    if(pending) showUndoToast(pending.message, pending.undo);
+  },
+  openDrawer: function(id){
+    state.drawer = !id ? {} : state.clients.find(function(c){ return c.id===id; });
+    state._pendingProjectPick = [];
+    render();
+  },
+  closeDrawer: function(){ state.drawer = null; render(); },
+  onFitChange: function(input){
+    var k = input.dataset.fitkey;
+    document.getElementById('fitval-'+k).textContent = input.value;
+    var vals = {};
+    document.querySelectorAll('[data-fitkey]').forEach(function(el){ vals[el.dataset.fitkey] = parseInt(el.value,10); });
+    document.getElementById('fit-total').textContent = weightedFit(vals);
+  },
+  onLogActionChange: function(val){
+    var picker = document.getElementById('portfolio-picker');
+    if(picker) picker.style.display = (val==='Portfolio Sent') ? 'block' : 'none';
+  },
+  togglePickProject: function(el){
+    el.classList.toggle('on');
+    var pid = el.dataset.pid;
+    state._pendingProjectPick = state._pendingProjectPick || [];
+    toggleInArray(state._pendingProjectPick, pid);
+  },
+  pickPreset: function(btn){
+    document.querySelectorAll('#preset-row .ms-preset').forEach(function(b){ b.classList.remove('selected'); });
+    btn.classList.add('selected');
+    var customInput = document.getElementById('preset-custom-date');
+    customInput.style.display = btn.dataset.days==='custom' ? 'block' : 'none';
+  },
+  logFromDrawer: function(){
+    var type = document.getElementById('log-action').value;
+    var selected = document.querySelector('#preset-row .ms-preset.selected');
+    var days = selected ? selected.dataset.days : '7';
+    var followUp;
+    if(days==='none') followUp = null;
+    else if(days==='custom') followUp = document.getElementById('preset-custom-date').value || null;
+    else followUp = addDays(todayStr(), parseInt(days,10));
+    var projectIds = (type==='Portfolio Sent') ? (state._pendingProjectPick||[]) : [];
+    var pending = logWithUndo(state.drawer.id, type, followUp, projectIds);
+    state.drawer = state.clients.find(function(c){ return c.id===state.drawer.id; });
+    state._pendingProjectPick = [];
+    render();
+    if(pending) showUndoToast(pending.message, pending.undo);
+  },
+  saveForm: function(e){
+    e.preventDefault();
+    var f = e.target;
+    var data = state.drawer && state.drawer.id ? Object.assign({}, state.drawer) : {history:[]};
+    ['company','category','country','website','instagram','linkedin','decisionMaker','email','phone','services','priority','whyFit','notes'].forEach(function(k){
+      data[k] = f[k].value;
+    });
+    var fit = {};
+    document.querySelectorAll('[data-fitkey]').forEach(function(el){ fit[el.dataset.fitkey] = parseInt(el.value,10); });
+    data.fit = fit;
+    if(!data.id){ data.id = uid(); state.clients.push(data); }
+    else { var idx = state.clients.findIndex(function(c){ return c.id===data.id; }); state.clients[idx] = data; }
+    saveClients();
+    state.drawer = null;
+    render();
+    toast('Client saved');
+  },
+  deleteClient: function(){
+    state.clients = state.clients.filter(function(c){ return c.id !== state.drawer.id; });
+    saveClients();
+    state.drawer = null;
+    render();
+    toast('Client deleted');
+  },
+  editHistory: function(clientId, itemId, field, value){
+    editHistoryItem(clientId, itemId, field, value);
+    state.drawer = state.clients.find(function(c){ return c.id===clientId; });
+    render();
+  },
+  deleteHistory: function(clientId, itemId){
+    deleteHistoryItem(clientId, itemId);
+    state.drawer = state.clients.find(function(c){ return c.id===clientId; });
+    render();
+  },
+
+  // ---- project drawer ----
+  openProjectDrawer: function(id){
+    if(!id){
+      state.projectDrawer = {id:null, title:'', completedDate:'', status:'Active', services:[], industries:[], skills:[],
+        confidence:3, commercialValue:3,
+        content:{behance:'Not Started', instagram:'Not Started', tiktok:'Not Started'},
+        links:{behance:'', instagram:'', tiktok:''},
+        processFiles:'', finalDeliverable:'', notes:''};
+    } else {
+      state.projectDrawer = state.projects.find(function(p){ return p.id===id; });
+    }
+    render();
+  },
+  updateProjectField: function(name, value){
+    if(state.projectDrawer) state.projectDrawer[name] = value;
+  },
+  updateProjectNestedField: function(group, key, value){
+    var d = state.projectDrawer;
+    if(!d) return;
+    d[group] = d[group] || {};
+    d[group][key] = value;
+  },
+  updateContentStatus: function(ch, value){
+    var d = state.projectDrawer;
+    if(!d) return;
+    d.content = d.content || {};
+    d.content[ch] = value;
+    // Intentionally do not touch d.links[ch] here — switching to/from Candidate
+    // must never delete an existing link, only lock/unlock editing of it.
+    render();
+  },
+  closeProjectDrawer: function(){ state.projectDrawer = null; render(); },
+  toggleProjectTag: function(field, val){
+    var d = state.projectDrawer;
+    d[field] = d[field] || [];
+    toggleInArray(d[field], val);
+    render();
+  },
+  saveProjectForm: async function(e){
+    e.preventDefault();
+    var d = state.projectDrawer || {};
+    var data = {
+      id: d.id || uid(),
+      title: d.title || '',
+      completedDate: d.completedDate || '',
+      status: d.status || 'Active',
+      services: d.services || [],
+      industries: d.industries || [],
+      skills: d.skills || [],
+      confidence: d.confidence || 3,
+      commercialValue: d.commercialValue || 3,
+      content: d.content || {},
+      links: d.links || {},
+      processFiles: d.processFiles || '',
+      finalDeliverable: d.finalDeliverable || '',
+      notes: d.notes || ''
+    };
+    if(!data.title){ toast('Give the project a title first'); return; }
+
+    // TEMP DIAGNOSTIC — remove after verifying real storage.set() behavior in production
+    console.log('[MS DIAGNOSTIC] BEFORE SAVE — project object:', JSON.parse(JSON.stringify(data)));
+    console.log('[MS DIAGNOSTIC] BEFORE SAVE — project id:', data.id, '| projects array length before:', state.projects.length);
+
+    var idx = state.projects.findIndex(function(p){ return p.id===data.id; });
+    var wasNew = idx === -1;
+    var prevSnapshot = wasNew ? null : Object.assign({}, state.projects[idx]);
+    if(wasNew) state.projects.push(data); else state.projects[idx] = data;
+
+    // TEMP DIAGNOSTIC
+    var payload = JSON.stringify(state.projects);
+    console.log('[MS DIAGNOSTIC] DURING SAVE — storage key: "projects" | payload length (chars):', payload.length, '| payload:', payload);
+
+    var ok = await saveProjects();
+
+    // TEMP DIAGNOSTIC
+    console.log('[MS DIAGNOSTIC] DURING SAVE — saveProjects() resolved to:', ok);
+    try{
+      var verifyRead = await window.storage.get('projects');
+      console.log('[MS DIAGNOSTIC] AFTER SAVE — window.storage.get("projects") returned:', verifyRead);
+      if(verifyRead && verifyRead.value){
+        var verifyParsed = JSON.parse(verifyRead.value);
+        var found = verifyParsed.find(function(p){ return p.id === data.id; });
+        console.log('[MS DIAGNOSTIC] AFTER SAVE — new project present in freshly-read storage:', !!found, found);
+      }
+    }catch(diagErr){
+      console.log('[MS DIAGNOSTIC] AFTER SAVE — window.storage.get("projects") threw:', diagErr);
+    }
+
+    if(!ok){
+      // Roll back the in-memory change so app state matches what's actually persisted.
+      // Drawer stays open with the user's edits intact so they can retry without re-typing anything.
+      if(wasNew){ state.projects.pop(); } else { state.projects[idx] = prevSnapshot; }
+      toast('Could not save the project — please try again.');
+      return;
+    }
+
+    state.projectDrawer = null;
+    render();
+    toast('Project saved');
+  },
+  deleteProject: function(){
+    state.projects = state.projects.filter(function(p){ return p.id !== state.projectDrawer.id; });
+    saveProjects();
+    state.projectDrawer = null;
+    render();
+    toast('Project deleted');
+  }
+};
+
+loadData();
+})();
+</script>
